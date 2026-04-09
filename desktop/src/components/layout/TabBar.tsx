@@ -99,14 +99,15 @@ export function TabBar() {
   if (tabs.length === 0) return null
 
   return (
-    <div className="flex items-center border-b border-[var(--color-border)] bg-[var(--color-surface)] min-h-[36px] select-none" data-tauri-drag-region>
+    <div className="flex items-center bg-[var(--color-surface-container)] min-h-[37px] select-none border-b border-[var(--color-border)]" data-tauri-drag-region>
+
       {canScrollLeft && (
-        <button onClick={() => scroll('left')} className="flex-shrink-0 w-7 h-full flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]">
+        <button onClick={() => scroll('left')} className="flex-shrink-0 w-7 h-[37px] flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]">
           <span className="material-symbols-outlined text-[16px]">chevron_left</span>
         </button>
       )}
 
-      <div ref={scrollRef} className="flex-1 flex overflow-x-hidden">
+      <div ref={scrollRef} className="flex-1 flex items-center overflow-x-hidden" data-tauri-drag-region>
         {tabs.map((tab) => (
           <TabItem
             key={tab.sessionId}
@@ -120,7 +121,7 @@ export function TabBar() {
       </div>
 
       {canScrollRight && (
-        <button onClick={() => scroll('right')} className="flex-shrink-0 w-7 h-full flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]">
+        <button onClick={() => scroll('right')} className="flex-shrink-0 w-7 h-[37px] flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]">
           <span className="material-symbols-outlined text-[16px]">chevron_right</span>
         </button>
       )}
@@ -197,10 +198,10 @@ function TabItem({ tab, isActive, onClick, onClose, onContextMenu }: {
       onClick={onClick}
       onContextMenu={onContextMenu}
       className={`
-        flex-shrink-0 flex items-center gap-1.5 px-3 h-[36px] border-r border-[var(--color-border)] cursor-pointer group transition-colors
+        flex-shrink-0 flex items-center gap-1.5 px-3 cursor-pointer group transition-colors
         ${isActive
-          ? 'bg-[var(--color-surface)] border-b-2 border-b-[var(--color-brand)]'
-          : 'bg-[var(--color-surface-container-low)] hover:bg-[var(--color-surface-hover)]'
+          ? 'h-[37px] bg-[var(--color-surface)] border-t-2 border-t-[var(--color-brand)]'
+          : 'h-[37px] bg-transparent hover:bg-[var(--color-surface-hover)]'
         }
       `}
       style={{ width: TAB_WIDTH, maxWidth: TAB_WIDTH }}
