@@ -28,9 +28,21 @@
       "csp": null
     }
   },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY1RTlBNEYxNDc4NDdEMEUKUldRT2ZZUkg4YVRwOVZHUjNXSzh2R1ZsREJwL1UzU1JKOEl2WHhMMkR3RVpJbzhjS2h0Y0J1NGcK",
+      "endpoints": [
+        "https://github.com/NanmiCoder/cc-haha/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
   "bundle": {
     "active": true,
     "targets": "all",
+    "createUpdaterArtifacts": true,
     "externalBin": [
       "binaries/claude-server",
       "binaries/claude-cli"
