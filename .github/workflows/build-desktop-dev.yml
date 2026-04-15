@@ -33,27 +33,21 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          ALL='[
-            {"platform":"macos-latest","rust_target":"aarch64-apple-darwin","tauri_args":"--target aarch64-apple-darwin","bundles":"app,dmg","label":"macOS-ARM64","artifact_name":"desktop-macos-arm64","artifact_glob":"*.dmg"},
-            {"platform":"macos-latest","rust_target":"x86_64-apple-darwin","tauri_args":"--target x86_64-apple-darwin","bundles":"app,dmg","label":"macOS-x64","artifact_name":"desktop-macos-x64","artifact_glob":"*.dmg"},
-            {"platform":"windows-latest","rust_target":"x86_64-pc-windows-msvc","tauri_args":"","bundles":"nsis,msi","label":"Windows-x64","artifact_name":"desktop-windows-x64","artifact_glob":"*.exe"},
-            {"platform":"ubuntu-22.04","rust_target":"x86_64-unknown-linux-gnu","tauri_args":"","bundles":"deb,appimage","label":"Linux-x64","artifact_name":"desktop-linux-x64","artifact_glob":"*.deb"},
-            {"platform":"ubuntu-22.04-arm","rust_target":"aarch64-unknown-linux-gnu","tauri_args":"","bundles":"deb,appimage","label":"Linux-ARM64","artifact_name":"desktop-linux-arm64","artifact_glob":"*.deb"}
-          ]'
+          ALL='[{"platform":"macos-latest","rust_target":"aarch64-apple-darwin","tauri_args":"--target aarch64-apple-darwin","bundles":"app,dmg","label":"macOS-ARM64","artifact_name":"desktop-macos-arm64"},{"platform":"macos-latest","rust_target":"x86_64-apple-darwin","tauri_args":"--target x86_64-apple-darwin","bundles":"app,dmg","label":"macOS-x64","artifact_name":"desktop-macos-x64"},{"platform":"windows-latest","rust_target":"x86_64-pc-windows-msvc","tauri_args":"","bundles":"nsis,msi","label":"Windows-x64","artifact_name":"desktop-windows-x64"},{"platform":"ubuntu-22.04","rust_target":"x86_64-unknown-linux-gnu","tauri_args":"","bundles":"deb,appimage","label":"Linux-x64","artifact_name":"desktop-linux-x64"},{"platform":"ubuntu-22.04-arm","rust_target":"aarch64-unknown-linux-gnu","tauri_args":"","bundles":"deb,appimage","label":"Linux-ARM64","artifact_name":"desktop-linux-arm64"}]'
 
           SELECTED="${{ inputs.platforms }}"
           if [ "$SELECTED" = "all" ]; then
-            echo "matrix={\"include\":$ALL}" >> "$GITHUB_OUTPUT"
+            MATRIX=$(echo "$ALL" | jq -c '{include: .}')
           else
-            echo "$ALL" | jq -c --arg sel "$SELECTED" \
-              '{include: [.[] | select(
-                ($sel == "macos-arm64" and .label == "macOS-ARM64") or
-                ($sel == "macos-x64" and .label == "macOS-x64") or
-                ($sel == "windows-x64" and .label == "Windows-x64") or
-                ($sel == "linux-x64" and .label == "Linux-x64") or
-                ($sel == "linux-arm64" and .label == "Linux-ARM64")
-              )]}' >> "$GITHUB_OUTPUT"
+            MATRIX=$(echo "$ALL" | jq -c --arg sel "$SELECTED" '{include: [.[] | select(
+              ($sel == "macos-arm64" and .label == "macOS-ARM64") or
+              ($sel == "macos-x64" and .label == "macOS-x64") or
+              ($sel == "windows-x64" and .label == "Windows-x64") or
+              ($sel == "linux-x64" and .label == "Linux-x64") or
+              ($sel == "linux-arm64" and .label == "Linux-ARM64")
+            )]}')
           fi
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
   # ── 构建 ────────────────────────────────────────────────────
   build:
