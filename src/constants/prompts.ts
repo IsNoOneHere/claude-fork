@@ -121,7 +121,7 @@ const FRONTIER_MODEL_NAME = 'Claude Opus 4.6'
 const CLAUDE_4_5_OR_4_6_MODEL_IDS = {
   opus: 'claude-opus-4-6',
   sonnet: 'claude-sonnet-4-6',
-  haiku: 'claude-haiku-4-5-20251001',
+  haiku: 'claude-haiku-4-5',
 }
 
 function getHooksSection(): string {
